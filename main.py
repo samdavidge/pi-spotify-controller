@@ -2,6 +2,7 @@ from project.credentialsfactory import CredentialsFactory
 from project.spotifyclient import SpotifyClient
 from project.player import Player
 from evdev import InputDevice, categorize, ecodes
+import urllib
 
 spotifyClient = SpotifyClient(CredentialsFactory.fromFile())
 
@@ -45,9 +46,15 @@ for event in gamepad.read_loop():
             elif event.code == buttons['rBtn']:
                 player.nextSong()
             elif event.code == buttons['selBtn']:
-                print("Select")
+                try:
+                    player.toggleShuffle()
+                except urllib.error.HTTPError:
+                    print('You cannot use shuffle in this context')
             elif event.code == buttons['staBtn']:
-                print("Start")
+                try:
+                    player.pause()
+                except urllib.error.HTTPError:
+                    player.play()
 
     #Analog gamepad
     elif event.type == ecodes.EV_ABS:
