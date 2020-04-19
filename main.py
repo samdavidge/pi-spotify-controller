@@ -54,17 +54,17 @@ for event in gamepad.read_loop():
         absevent = categorize(event)
         # Left, Right and Center
         if ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_X":
-             if absevent.event.value == buttons['leftUpPad']:
+            if absevent.event.value == buttons['leftUpPad']:
                 print("Left")
-             elif absevent.event.value == buttons['rightDownPad']:
+            elif absevent.event.value == buttons['rightDownPad']:
                 print("Right")
-             elif absevent.event.value == buttons['centerPad']:
+            elif absevent.event.value == buttons['centerPad']:
                 print("Center")
         #Up, Down and Center        
         elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y":
-             if absevent.event.value == buttons['leftUpPad']:
+            if absevent.event.value == buttons['leftUpPad']:
                 player.increaseVolume()
-             elif absevent.event.value == buttons['rightDownPad']:
+            elif absevent.event.value == buttons['rightDownPad']:
                 player.decreaseVolume()
-             elif absevent.event.value == buttons['centerPad']:
+            elif absevent.event.value == buttons['centerPad']:
                 print("Center")
