@@ -47,4 +47,4 @@ class SpotifyClient:
             with urllib.request.urlopen(req) as response:
                 body = response.read().decode("utf-8")
                 body = json.loads(body)
-                self.credentials.accessToken = body['access_token']
+                self.credentials.updateAccessToken(body['access_token'], now, body['expires_in'])
