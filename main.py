@@ -3,8 +3,15 @@ from project.spotifyclient import SpotifyClient
 from project.player import Player
 from project.queuemanager import QueueManager
 from evdev import InputDevice, categorize, ecodes
+import evdev
 import urllib
 
+inputDevices = [InputDevice(path) for path in evdev.list_devices()]
+for inputDevice in inputDevices:
+    if inputDevice.name.replace(' ', '') == 'usbgamepad':
+        gamepad = inputDevice
+        break
+        
 spotifyClient = SpotifyClient(CredentialsFactory.fromFile())
 
 device = spotifyClient.getCurrentDevice()
@@ -12,8 +19,6 @@ device = spotifyClient.getCurrentDevice()
 if device:
     player = Player(device, spotifyClient)
     queueManager = QueueManager(spotifyClient, player)
-
-gamepad = InputDevice('/dev/input/event2')
 
 buttons = {
     'aBtn': 289,
