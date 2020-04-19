@@ -1,6 +1,7 @@
 from project.credentialsfactory import CredentialsFactory
 from project.spotifyclient import SpotifyClient
 from project.player import Player
+from project.queuemanager import QueueManager
 from evdev import InputDevice, categorize, ecodes
 import urllib
 
@@ -10,6 +11,7 @@ device = spotifyClient.getCurrentDevice()
 
 if device:
     player = Player(device, spotifyClient)
+    queueManager = QueueManager(spotifyClient, player)
 
 gamepad = InputDevice('/dev/input/event2')
 
@@ -27,18 +29,17 @@ buttons = {
     'centerPad': 127
 }
 
-#affiche les codes interceptes |  display codes
+# Handle input
 for event in gamepad.read_loop():
-    #Boutons | buttons 
+    # Buttons
     if event.type == ecodes.EV_KEY:
-        #print(event)
         if event.value == 1:
             if event.code == buttons['xBtn']:
                 print("X")
             elif event.code == buttons['bBtn']:
                 print("B")
             elif event.code == buttons['aBtn']:
-                print("A")
+                queueManager.queueTopTracksForArtist('50nN8IFD4xA67fI4jYbLV4')  # Kano
             elif event.code == buttons['yBtn']:
                 print("Y")
             elif event.code == buttons['lBtn']:
@@ -56,7 +57,7 @@ for event in gamepad.read_loop():
                 except urllib.error.HTTPError:
                     player.play()
 
-    #Analog gamepad
+    # Analog gamepad
     elif event.type == ecodes.EV_ABS:
         absevent = categorize(event)
         # Left, Right and Center
@@ -67,7 +68,7 @@ for event in gamepad.read_loop():
                 print("Right")
             elif absevent.event.value == buttons['centerPad']:
                 print("Center")
-        #Up, Down and Center        
+        # Up, Down and Center
         elif ecodes.bytype[absevent.event.type][absevent.event.code] == "ABS_Y":
             if absevent.event.value == buttons['leftUpPad']:
                 player.increaseVolume()

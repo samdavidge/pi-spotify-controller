@@ -32,3 +32,6 @@ class Player:
     def toggleShuffle(self):
         shuffle = 'true' if self.device.toggleShuffle() else 'false'
         self.spotifyClient.makeRequest('me/player/shuffle?state=' + shuffle, 'PUT')
+
+    def queueTrack(self, trackUri: str):
+        self.spotifyClient.makeRequest('me/player/queue?uri=' + trackUri, 'POST')

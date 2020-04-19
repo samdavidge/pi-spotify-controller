@@ -1,1 +1,4 @@
 creds.txt
+.idea/
+project/__pycache__/
+venv/
